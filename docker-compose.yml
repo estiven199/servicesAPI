@@ -1,0 +1,36 @@
+version: '3'
+services:
+  api:
+    container_name: servicesAPI
+    restart: always
+    build: .
+    ports:
+      - 8000:8000
+    links:
+      - postgres
+    volumes:
+      - .:/usr/src/app    
+  postgres:
+    container_name: postgres
+    image: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - DATABASE_HOST=127.0.0.1
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=root
+    # volumes:
+    #   - ./initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
+  pgadmin:
+    image: dpage/pgadmin4
+    environment: 
+      PGADMIN_DEFAULT_EMAIL: "admin@admin.com"
+      PGADMIN_DEFAULT_PASSWORD: "admin"
+    ports: 
+      - 80:80
+    depends_on:
+      - postgres
+
+
